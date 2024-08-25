@@ -1,4 +1,3 @@
-#define DEBUG
 #include "Globals.h"
 #include "debug.h"
 #include "SM_16UNIVIN.h"
@@ -152,7 +151,7 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= 250) {
+  if (currentMillis - previousMillis >= 500) {
     unsigned long drivingTimeAtSpeed = currentMillis - previousMillis;
     previousMillis = currentMillis;
 

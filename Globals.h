@@ -1,3 +1,5 @@
+#define DEBUG
+
 // I2C Addresses
 #define I2C_GPS_ADR 0x68       // Known
 #define I2C_EGT_ADR 0x67       // Known
