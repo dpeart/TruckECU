@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RealDash CAN XML description file, version 2 Requires RealDash version 1.5.8 or newer -->
+<RealDashCAN version="2">
+  <!-- baseId [optional] is added to each frame canId. -->
+  <!-- frames baseId="3200" -->
+  <frames>
+    <!-- PARAMETERS FOR 'frame' -->
+    <!-- 'id' can identifier (= baseId + id). Use 0x prefix to enter id as hexadesimal value. For example <frame id="3200"> is equal to <frame id="0x0c80"> -->
+    <!-- 'writeInterval' [optional] this CAN frame is written to CAN bus in this interval (milliseconds) -->
+    <!-- 'endianess' [optional] the endianess of all frame values (big | little [default]).  -->
+    <!-- 'signed' [optional, from 1.7.4] set to true to force RealDash to handle all values in frame as signed values.  -->
+    <frame id="3200">
+      <!-- PARAMETERS FOR 'value' -->
+      <!-- 'targetId' links value to RealDash input, see RealDash manuals www for a complete list -->
+      <!-- OR -->
+      <!-- 'name' links value to RealDash input, input appears in 'ECU Specific' input category -->
+
+      <!-- 'units' [optional] is used for post calculations, "F", "mph", "psi", "bit" which need to be specified for dashboard conversions to work properly -->
+      <!-- 'offset' byte offset of the value in frame -->
+      <!-- 'length' value length in bytes -->
+      <!-- 'startbit' [optional] the index of the first bit of the value -->
+      <!-- 'bitcount' [optional] number of bits used by the value -->
+      <!-- 'endianess' [optional] the endianess of value (big | little [default]).  -->
+      <!-- 'signed' [optional, from 1.7.4] set to true to force RealDash to handle this value as signed.  -->
+      <!-- 'rangeMin' and 'rangeMax' [optional] if 'name' is used instead of 'targetId', this is the recommended value range in RealDash editor -->
+      <!-- 'initialValue' [optional] if this parameter is present, value is written to CAN after connection has been made to the CAN bus -->
+      <!-- 'conversion' [optional] if omitted, value is read 'as-is'.
+           Otherwise variables 'B0', 'B1', 'B2', 'B3', 'V' and 'ID#' can be used within conversion formula, for example;
+           conversion="V/10" - result is incoming value / 10
+           conversion="B0+15*(B1-43)" - result is 'first byte + 15 * (second byte - 43)
+           conversion="V+ID200-74.3" - result is incoming value + 'Body Electronics->Gear' - 74.3 -->
+      <!-- From RealDash version 1.6.6, 'conversionABC' is an option to 'conversion' and uses A,B,C,...AA,AB,AC,...,etc format to distinquish the individual bytes on the reply.
+           This makes it easier to convert the Equation from other apps.
+           Example: conversion="B0+15*(B1-43)" and conversionABC="A+15*(B-43)" produce the same result -->
+
+      <!-- 1st CAN frame, speed, rpm, gear, odometer -->
+      <value targetId="64" units="MPH" offset="0" length="2" ></value>
+      <value targetId="37" units="RPM" offset="2" length="2"></value>
+      <value targetId="200" offset="4" length="2" enum="0~170:P,171~340:R,341~511:N,512~682:D,683~854:2,855~1023:1,#:err"></value>
+      <value targetId="310" units="MPH" offset="6" length="2" conversion="V/10"></value>
+      
+      
+      <!-- <value targetId="31" units="kPA" offset="2" length="2" conversion="V/10"></value>
+      <value targetId="14" units="C" offset="4" length="2" conversion="V-100"></value> -->
+      <!-- <value targetId="42" units="%" offset="6" length="2" conversion="V/10"></value> -->
+    </frame>
+      
+    <frame id="3201">
+      <!-- 2nd CAN frame, Arduino example digital inputs, these will appear in RealDash 'ECU Specific' input category -->
+      <!-- note that 9 bit values all come from same 2 bytes -->
+      <!-- if units="bit", RealDash always checks the lowest bit as of value on or off. Therefore the bitshift to the right on conversion -->
+      <!-- IAT, oil, coolant, ambient -->
+      <value targetId="27" units="C" offset="0" length="2" conversion="V/100"></value>
+      <value targetId="138" units="C" offset="2" length="2" conversion="V/100"></value>
+      <value targetId="14" units="C" offset="4" length="2" conversion="V/100"></value>
+      <value targetId="173" units="C" offset="6" length="2" conversion="V/100"></value>
+    </frame>
+
+    <frame id="3202">
+    <!-- boost, oil, fuel pressures, EG Temp -->
+      <value targetId="270" units="psi" offset="0" length="2" conversion="V/100"></value>
+      <value targetId="151" units="psi" offset="2" length="2" conversion="V/100"></value>
+      <value targetId="202" units="psi" offset="4" length="2" conversion="V/100"></value>
+      <value targetId="106" units="C" offset="6" length="2" conversion="V/100"></value>
+    </frame>
+
+    <frame id="3203">
+      <!-- 4th CAN frame, acceleration data -->
+      <!-- x, y, z -->
+      <value targetId="6" units="G" offset="0" length="2"> conversion="V/100"</value>
+      <value targetId="7" units="G" offset="2" length="2"> conversion="V/100"</value>
+      <value targetId="8" units="G" offset="4" length="2"> conversion="V/100"</value>   </frame>
+    
+    <frame id="3204">
+      <!-- cruise active, decel, accel, speedactive, setvalue -->
+      <value name="cruiseActive" offset="0" length="2"></value>
+      <value name="cruiseSetSpeed" offset="2" length="2"></value>
+      <!-- overdrive, TCC, left, right, parking, head_low, head_high, running. water_fuel, low_washer -->
+      <value targetId="147" units="bit" startbit="32" bitcount="1"></value>
+      <value targetId="143" units="bit" startbit="33" bitcount="1"></value>
+      <value targetId="160" units="bit" startbit="34" bitcount="1"></value>
+      <value targetId="161" units="bit" startbit="35" bitcount="1"></value>
+      <value targetId="164" units="bit" startbit="36" bitcount="1"></value>
+      <value targetId="156" units="bit" startbit="37" bitcount="1"></value>
+      <value targetId="157" units="bit" startbit="38" bitcount="1"></value>
+      <value targetId="155" units="bit" startbit="39" bitcount="1"></value>
+      <value name="Water In Fuel" units="bit" startbit="40" bitcount="1"></value>
+      <value targetId="176" units="bit" startbit="41" bitcount="1"></value> 
+  
+    </frame>
+  </frames>
+</RealDashCAN>
