@@ -23,6 +23,7 @@
 #define DIG_CRUISE_ON 11
 #define DIG_CRUISE_SET 12
 #define DIG_CRUISE_RESUME 13
+#define DIG_BRAKE_LIGHT 14
 
 // RP2040 GPIO PWN Pins
 #define PWM_SPEED 13

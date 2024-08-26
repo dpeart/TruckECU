@@ -14,9 +14,9 @@
 
 // Function to calculate pressure from voltage for 
 // Boost
-int calculatePressure5BAR(float voltage);
+int calculatePressure5PSI(float voltage);
 
 // 7 BAR sensro: Auber P207
 // oil, fuel
 // P=(V-0.5)/0.04
-int calculatePressure7BAR(float voltage);
+int calculatePressure7PSI(float voltage);

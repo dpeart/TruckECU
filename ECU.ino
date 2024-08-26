@@ -151,7 +151,7 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= 500) {
+  if (currentMillis - previousMillis >= 250) {
     unsigned long drivingTimeAtSpeed = currentMillis - previousMillis;
     previousMillis = currentMillis;
 
@@ -162,9 +162,9 @@ void loop() {
     // updateMilesDriven(speed, drivingTimeAtSpeed);
     // rpm = calculateRPM();
 
-    // readEGTemp();
-    // calculatePressures();
-    // calculateTemps();
+    readEGTemp();
+    calculatePressures();
+    calculateTemps();
 
     if (mpu.getMotionInterruptStatus()) {
       /* Get new sensor events with the readings */
@@ -201,15 +201,15 @@ void loop() {
 }
 
 void calculatePressures() {
-  oilPressure = calculatePressure5BAR(adc_card.readAnalogMv(ADC_OIL_PRESSURE));
-  fuelPressure = calculatePressure5BAR(adc_card.readAnalogMv(ADC_FUEL_PRESSURE));
-  boostPressure = calculatePressure5BAR(adc_card.readAnalogMv(ADC_BOOST_PRESSURE));
-  DB_PRINT("oilP: ");
-  DB_PRINTLN(oilPressure);
-  DB_PRINT("fuelP: ");
-  DB_PRINTLN(fuelPressure);
-  DB_PRINT("boostP: ");
-  DB_PRINTLN(boostPressure);
+  oilPressure = calculatePressure5PSI(adc_card.readAnalogMv(ADC_OIL_PRESSURE));
+  fuelPressure = calculatePressure5PSI(adc_card.readAnalogMv(ADC_FUEL_PRESSURE));
+  boostPressure = calculatePressure5PSI(adc_card.readAnalogMv(ADC_BOOST_PRESSURE));
+  // DB_PRINT("oilP: ");
+  // DB_PRINTLN(oilPressure);
+  // DB_PRINT("fuelP: ");
+  // DB_PRINTLN(fuelPressure);
+  // DB_PRINT("boostP: ");
+  // DB_PRINTLN(boostPressure);
   }
 
 void calculateTemps() {
@@ -218,23 +218,23 @@ void calculateTemps() {
   coolantTemp = int(rtd_card.readTemp(RTD_COOLANT_TEMP) * INT_SCALING);
   transTemp = int(rtd_card.readTemp(RTD_TRANS_TEMP) * INT_SCALING);
   ambientTemp = int(rtd_card.readTemp(RTD_AMBIENT_TEMP) * INT_SCALING);
-  DB_PRINT("iaT: ");
-  DB_PRINTLN(iaTemp);
-  DB_PRINT("oilT: ");
-  DB_PRINTLN(oilTemp);
-  DB_PRINT("coolantT: ");
-  DB_PRINTLN(coolantTemp);
-  DB_PRINT("transT: ");
-  DB_PRINTLN(transTemp);
-  DB_PRINT("ambientT:");
-  DB_PRINTLN(ambientTemp);
+  // DB_PRINT("iaT: ");
+  // DB_PRINTLN(iaTemp);
+  // DB_PRINT("oilT: ");
+  // DB_PRINTLN(oilTemp);
+  // DB_PRINT("coolantT: ");
+  // DB_PRINTLN(coolantTemp);
+  // DB_PRINT("transT: ");
+  // DB_PRINTLN(transTemp);
+  // DB_PRINT("ambientT:");
+  // DB_PRINTLN(ambientTemp);
 }
 
 void readEGTemp() {
   // Read the temperature in Celsius
   EGTemp = int(mcp.readThermocouple() * INT_SCALING);
-  DB_PRINT("EGT: ");
-  DB_PRINTLN(EGTemp);
+  // DB_PRINT("EGT: ");
+  // DB_PRINTLN(EGTemp);
 }
 
 void updateMilesDriven(float speed, unsigned long timeMillis) {

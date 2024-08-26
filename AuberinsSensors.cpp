@@ -1,17 +1,17 @@
 #include "Globals.h"
 
 // Function to calculate pressure from voltage
-int calculatePressure5BAR(float mV) {
+int calculatePressure5PSI(float mV) {
     const float offset = 0.5;
     const float sensitivity = 0.0533;
-    float bar (((mV / 1000) - offset) / sensitivity);
-    return int(bar * INT_SCALING);
+    float psi ((((mV / 1000) - offset) / sensitivity) - 14);
+    return int(psi * INT_SCALING);
 };
 
-int calculatePressure7BAR(float mV) {
+int calculatePressure7PSI(float mV) {
     const float offset = 0.5;
     const float sensitivity = 0.04;
-    float bar (((mV / 1000) - offset) / sensitivity);
-    return int(bar * INT_SCALING);
+    float psi ((((mV / 1000) - offset) / sensitivity) - 14);
+    return int(psi * INT_SCALING);
 };
 
